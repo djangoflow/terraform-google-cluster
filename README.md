@@ -1,2 +1,2 @@
 # terraform-google-cluster
-An opinionated Google CKE cluster for Djangoflow deployment
+A very opinionated Google CKE cluster for Djangoflow deployment.
