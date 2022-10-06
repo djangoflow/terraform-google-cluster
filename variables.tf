@@ -52,3 +52,9 @@ variable "node_pools" {
     }
   }
 }
+
+variable "extra_admins" {
+  description = "A list of emails of extra cluster admins"
+  type = list(string)
+  default = []
+}
