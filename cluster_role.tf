@@ -15,7 +15,7 @@ resource "kubernetes_cluster_role_binding_v1" "cluster_admin" {
     namespace = ""
   }
   dynamic "subject" {
-    for_each = toset([var.extra_admins])
+    for_each = {for v in  var.extra_admins : v => v}
     content {
       kind      = "User"
       name      = subject.key
