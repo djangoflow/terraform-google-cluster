@@ -11,3 +11,7 @@ output "token" {
 output "host" {
   value = "https://${google_container_cluster.cluster.endpoint}"
 }
+
+output "private_host" {
+  value = "https://${google_container_cluster.cluster.private_cluster_config.0.private_endpoint}"
+}
