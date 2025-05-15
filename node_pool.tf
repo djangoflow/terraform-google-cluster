@@ -53,7 +53,7 @@ resource "google_container_node_pool" "node_pool" {
 
   lifecycle {
     ignore_changes = [
-      initial_node_count
+      initial_node_count, node_config["resource_labels"]
     ]
   }
 
