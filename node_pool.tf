@@ -1,12 +1,12 @@
 resource "google_container_node_pool" "node_pool" {
   depends_on = [google_container_cluster.cluster]
-  for_each   = var.node_pools
-  name       = each.key
-  location   = var.location
-  cluster    = var.name
+  for_each = var.node_pools
+  name     = each.key
+  location = var.location
+  cluster  = var.name
 
   initial_node_count = each.value.min_node_count
-
+  max_pods_per_node  = var.max_pods_per_node
   dynamic "autoscaling" {
     for_each = each.value.max_node_count > each.value.min_node_count ? [1] : []
     content {
@@ -21,6 +21,17 @@ resource "google_container_node_pool" "node_pool" {
   }
 
   node_config {
+    resource_labels = {
+      "goog-gke-node-pool-provisioning-model" = "spot"
+    }
+    tags = []
+
+    kubelet_config {
+      cpu_cfs_quota      = false
+      pod_pids_limit     = 0
+      cpu_manager_policy = "none"
+    }
+
     image_type   = "COS_containerd"
     machine_type = each.value.machine_type
 

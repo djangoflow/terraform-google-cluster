@@ -78,3 +78,7 @@ variable "default_oauth_scopes" {
     "https://www.googleapis.com/auth/trace.append",
   ]
 }
+
+variable "max_pods_per_node" {
+  default = 100
+}
