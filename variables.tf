@@ -39,16 +39,24 @@ variable "node_pools" {
     disk_size_gb   = number
     disk_type      = string
     preemptible    = bool
-
+    guest_accelerator = optional(object({
+      type  = string
+      count = number
+      gpu_sharing_config = optional(object({
+        gpu_sharing_strategy       = string
+        max_shared_clients_per_gpu = number
+      }))
+    }))
   }))
   default = {
     "pool-1" : {
-      min_node_count = 3
-      max_node_count = 0
-      disk_size_gb   = 100
-      machine_type   = "e2-small"
-      disk_type      = "pd-standard"
-      preemptible    = true
+      min_node_count    = 3
+      max_node_count    = 0
+      disk_size_gb      = 100
+      machine_type      = "e2-small"
+      disk_type         = "pd-standard"
+      preemptible       = true
+      guest_accelerator = null
     }
   }
 }

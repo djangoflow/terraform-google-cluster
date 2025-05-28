@@ -35,7 +35,6 @@ resource "google_container_node_pool" "node_pool" {
     image_type   = "COS_containerd"
     machine_type = each.value.machine_type
 
-
     disk_size_gb = each.value.disk_size_gb
     disk_type    = each.value.disk_type
     preemptible  = each.value.preemptible
@@ -48,6 +47,22 @@ resource "google_container_node_pool" "node_pool" {
 
     workload_metadata_config {
       mode = "GKE_METADATA"
+    }
+
+    dynamic "guest_accelerator" {
+      for_each = each.value.guest_accelerator != null ? [each.value.guest_accelerator] : []
+      content {
+        type  = guest_accelerator.value.type
+        count = guest_accelerator.value.count
+
+        dynamic "gpu_sharing_config" {
+          for_each = guest_accelerator.value.gpu_sharing_config != null ? [guest_accelerator.value.gpu_sharing_config] : []
+          content {
+            gpu_sharing_strategy       = gpu_sharing_config.value.gpu_sharing_strategy
+            max_shared_clients_per_gpu = gpu_sharing_config.value.max_shared_clients_per_gpu
+          }
+        }
+      }
     }
   }
 
